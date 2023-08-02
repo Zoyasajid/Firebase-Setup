@@ -49,7 +49,7 @@ const Signup = () => {
   
     }
     function backtologin(){
-        navigate("/login")
+        navigate("/")
     }
   return (<div className="main">
     <form>
