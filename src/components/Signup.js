@@ -1,55 +1,62 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "./FirebaseFile";
+import {db} from "./FirebaseFile"
+import { setDoc,doc ,collection} from "firebase/firestore";
 import './Signup.css'
-// import './Singup.css'
+
 const Signup = () => {
+  const [contacts,setContacts]=useState([])
+
     const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-
+  
   const [errormsg, setErrormsg] = useState("");
   const handleSubmit = (e) => {
     if (!formData.name || !formData.email || !formData.password) {
       setErrormsg("fill all field");
-    //   console.log(errormsg)
       return;
     }
-
     createUserWithEmailAndPassword(
       auth,
       formData.email,
       formData.password
-    )
+    )       
+   
+
       .then((userCredential) => {
         const user = userCredential.user;
+
         if (user) {updateProfile(user, { displayName: formData.name })
         .then(() => {
+          const saveUserData = async (db, user, userData) => {
+            try {
+             
+              await setDoc(doc(db, "users", user.uid), userData);
+              console.log("User data saved successfully!");
+            } catch (error) {
+              console.error("Error saving user data: ", error);
+            }
+          };
+          saveUserData(db, user, formData)
           console.log(user,'Display name updated:', formData.name);
           navigate('/home');
+          setContacts(user)
         })
-        // const user =res.user
-        // updateProfile(user,{displayName:formData.name})
-  
-        // console.log(user.displayName);
-        // console.log('Display name updated:', user);
-        // navigate("/home")
       }}
-     
       )
-
       .catch((err) => {
         setErrormsg(err.message);
+        console.log(errormsg)
       });
-      // console.log(errormsg)
-  
     }
     function backtologin(){
-        navigate("/home")
+        navigate("/")
     }
   return (<div className="main">
     <form>
@@ -93,10 +100,11 @@ const Signup = () => {
               }))
             }
           />{" "}
-<h2 className="errormsg">{errormsg}</h2>     
+<h2 className="errormsg"><i>{errormsg}</i></h2>     
    </div>
         <button onClick={handleSubmit} type="button" className="btn">
           Sign Up
+
         </button>
         <div className="login">
         <h2 onClick={backtologin}> Already have an account?  <b>Login</b></h2>
