@@ -9,7 +9,7 @@ import {HiOutlineUserCircle} from 'react-icons/hi'
 import {RxCross1} from 'react-icons/rx'
 import {BsFillTrash3Fill}from 'react-icons/bs'
 import './home.css';
-import { collection,setDoc,doc, addDoc, getDocs, deleteDoc,where, query} from 'firebase/firestore';
+import { collection,setDoc,doc, addDoc, getDocs, deleteDoc,where, query, onSnapshot} from 'firebase/firestore';
 const Home = () => {
   const [displayName, setDisplayName] = useState('');
   const [userData,setUserData]=useState([]) 
@@ -35,22 +35,8 @@ const Home = () => {
       console.log(error)
     }
     window.location.reload();
-
-    }
-// const getDatabyQuery =async()=>{
-//   const collectionRef = collection(db,"contacts");
-//   const q = query(collectionRef,where(userData.uid,"==",formData.userId))
-//   const snapshot = await getDocs(q)
-//   snapshot.forEach((data)=>setContacts(data.data()))
-//   getDatabyQuery()
-// }
-
-
-
-
-
+  }
   const handleSubmit = async() => {
-    // toggle={()=>setModel(!modal)}
     setModel(false)
     if(formData ===null){
       alert ("fill All the fields")
@@ -66,62 +52,77 @@ const Home = () => {
     window.location.reload();
   }
   // console.log(userData)
+// useEffect (()=>{
+//   const getDatabyQuery =async()=>{
+//     const contactsData = [];
 
-useEffect (()=>{
-  const getcontacts =async ()=>{
-    try{
-      const contactref = collection(db,"contacts")
-      // .where(formData.userId, '==', userData.uid)
-      const conSnapshot = await (getDocs(contactref))
-      const contactList= conSnapshot.docs.map((doc)=>{
-        return{
-          id:doc.id,
-          ...doc.data()
-        }
-      })
-      // console.log(contactList)
-      // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
-      // console.log(filteredContacts)//null
-    // setContacts (filteredContacts)
-    setContacts(contactList)
-    // console.log(userData.uid)//null
-      }
-      // console.log(userData.uid)
-      // console.log(formData.userId)
-      // setContacts(contactList)
-    catch(error){
-      console.log(error)
-    }
-  }
-  return () => getcontacts();
+//     const collectionRef =  collection(db,"contacts");
+//     console.log(collectionRef)
+//     const q = query(collectionRef, where("userId","==",userData.uid))
+//     const querySnapshot = await getDocs(q);
+//     // const querySnapshot = await getDocs(q);
+// querySnapshot.forEach((doc) => {
+//   console.log(doc.id, '=>', doc.data());
+//   contactsData.push(doc.data());
+//   setContacts(contactsData)
+// });
+// }
+//   getDatabyQuery()
+// },[])
+useEffect(() => {
+  const getDatabyQuery = async () => {
+    const contactsData = [];
+    const collectionRef = collection(db, "contacts");
+    console.log(collectionRef);
+    const q = query(collectionRef, where("userId", "==", userData.uid));
+    const querySnapshot = await getDocs(q);
 
-  // getcontacts() 
-},[])
+    querySnapshot.forEach((doc) => {
+      // console.log(doc.id, '=>', doc.data());
+      contactsData.push(doc.data());
+    });
+
+    setContacts(contactsData);
+  }; getDatabyQuery();
+}, []);
+
+// console.log(contacts)
+// useEffect (()=>{
+//   const getcontacts =async ()=>{
+//     try{
+//       const contactref = collection(db,"contacts")
+//       const conSnapshot = await (getDocs(contactref))
+//       const contactList= conSnapshot.docs.map((doc)=>{
+//         return{
+//           id:doc.id,
+//           ...doc.data()
+//         }
+//       })
+//             // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
+
+//       // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
+//     // setContacts (filteredContacts)
+//     console.log(contactList)
+//     setContacts(contactList)
+//     // console.log(userData.uid)//null
+//       }
+//       // console.log(userData.uid)
+//       // console.log(formData.userId)
+//       // setContacts(contactList)
+//     catch(error){
+//       console.log(error)
+//     }
+//   }
+//   return () => getcontacts();
+
+//   // getcontacts() 
+// },[])
 // const userId = auth.currentUser ? auth.currentUser.uid : null;
 
   // const filteredContacts = contacts.filter((contact) =>{return console.log(contact);});
   // console.log(filteredContacts)
   // console.log(contacts)
 
-// useEffect(() => {
-// const unsubscribe =collection(db,'contacts')
-//       .where(formData.userId, '==', userData.uid)
-//       .onSnapshot((snapshot) => {
-//         const contactsData = snapshot.docs.map((doc) => ({
-//           id: doc.id,
-//           ...doc.data(),
-//         }));
-//         console.log(formData.userId)
-//         setContacts(contactsData);
-//       });
-
-//     // Cleanup the listener when the component is unmounted
-
-//     return () => unsubscribe()[userData.uid]})
-
-  // function about(){
-  //   alert ("Here you can see your contact add them delete,or update")
-  // }
   return ( <div className='home'>
     <div className='navbar'>
               <div className='navbartag'> 
@@ -129,21 +130,17 @@ useEffect (()=>{
     </div>
       <ul>
         <li className='home'>  <Link to="/"><b>Logout</b></Link></li>
-        {/* <li className='li' onClick={()=>setModel(true)}>Add</li> */}
-        {/* <li className='li' onClick={about}>About</li> */}
     </ul>
     </div>
 
 
     <div className="App">
     <div className='navbar-app'>
-    {/* <img className="imgg" src={svg} alt="sign" /> */}
     <h4> CONTACT APP</h4>
         </div>
      <div className='input'>
       <AiOutlineSearch className='icon'/>
       <input type='text'/>
-      {/* <button onClick={addlist}> */}
 <AiFillPlusCircle className='iconplus' onClick={()=>setModel(true)}/>
 {/* </button> */}
      </div>
