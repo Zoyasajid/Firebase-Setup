@@ -19,6 +19,7 @@
   margin-right: 40px;
   margin-top: 24px;
   width: 100%;
+  background-color: transparent;
 
 }
 .navbar h1{
@@ -29,7 +30,7 @@
 li {
   cursor: pointer;
   float: right  ;
-  background-color: #8062D6;
+  background-color: transparent;
 
   display: inline;
   margin: 16px;
@@ -63,4 +64,10 @@ color: black;
     height: 10vh;
     width: 100%;
   }
+  .navbar h1{
+    margin-left: 10px;
+    font-size: 2rem;
+    margin-top: 23px;
+  }
+   
 }

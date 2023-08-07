@@ -34,6 +34,8 @@ const Home = () => {
     } catch (error) {
       console.log(error)
     }
+    window.location.reload();
+
     }
 // const getDatabyQuery =async()=>{
 //   const collectionRef = collection(db,"contacts");
@@ -61,7 +63,7 @@ const Home = () => {
       address:formData.address,
       userId:userData.uid
     })
-  
+    window.location.reload();
   }
   // console.log(userData)
 
@@ -77,11 +79,11 @@ useEffect (()=>{
           ...doc.data()
         }
       })
-      console.log(contactList)
-      const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
-      console.log(filteredContacts)//null
-    setContacts (filteredContacts)
-    // setContacts(contactList)
+      // console.log(contactList)
+      // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
+      // console.log(filteredContacts)//null
+    // setContacts (filteredContacts)
+    setContacts(contactList)
     // console.log(userData.uid)//null
       }
       // console.log(userData.uid)
