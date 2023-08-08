@@ -130,6 +130,7 @@ const Home = () => {
       </div>
     </div>
   ))}
+ <ToastContainer/>
 
 </div>
 
@@ -204,7 +205,6 @@ toggle={()=>setModel(!modal)}>
  </ModalBody>
    </Modal>
 
- <ToastContainer/>
 </div>
 )}
 
