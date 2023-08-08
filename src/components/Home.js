@@ -11,7 +11,7 @@ import {BsFillTrash3Fill}from 'react-icons/bs'
 import './home.css';
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
-import { collection,setDoc,doc, addDoc, getDocs, deleteDoc,where, query, onSnapshot,deleteField,updateDoc} from 'firebase/firestore';
+import { collection,doc, addDoc, getDocs, deleteDoc,where, query} from 'firebase/firestore';
 const Home = () => {
   const [displayName, setDisplayName] = useState('');
   const [searchTerm, setSearchTerm] = useState("");

@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "./FirebaseFile";
 import {db} from "./FirebaseFile"
-import { setDoc,doc ,collection} from "firebase/firestore";
+import { setDoc,doc} from "firebase/firestore";
 import './Signup.css'
 
 const Signup = () => {
