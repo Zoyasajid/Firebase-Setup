@@ -1,587 +1,587 @@
-// import pic from './pic/undraw_Newspaper_re_syf5.png'
-import React, { useEffect, useState } from 'react';
-import svg from './pic/logos_firebase.svg'
-import { auth } from './FirebaseFile';
-import { Link } from 'react-router-dom';
-import {db} from './FirebaseFile'
-import {AiOutlineSearch,AiFillPlusCircle} from 'react-icons/ai';
-import {HiOutlineUserCircle} from 'react-icons/hi'
-import {BsFillTrash3Fill}from 'react-icons/bs'
-import {BiMessageSquareEdit} from 'react-icons/bi'
-// import './home.css';
-import { collection,getDocs} from 'firebase/firestore';
-const Home = () => {
-  const [displayName, setDisplayName] = useState('');
-  const [contacts,setContacts]=useState([])
-  // const [formData, setFormData] = useState({
-  //   name: "",
-  //   email: "",
-  // });
- 
-  // const [user,setUser]=useState({})
-  // const [cool,setCool]=useState([])
-  useEffect(() => {
-    const user = auth.currentUser;
-    // setUser(user)
-    if (user && user.displayName) {
-      setDisplayName(user.displayName);
-      // setCool(user)
-    }
-// setUser(user)
-
- 
-  }, []);
-  // console.log(cool.name)
-  // useEffect(()=>{
-  //   const getContacts = async()=>{
-  //       try {
-  //          const contactref= collection(db,"users") 
-  //          const consnapshots =await getDocs(contactref);
-  //          const contactList =consnapshots.docs.map((doc)=>
-  //          {
-  //           return{
-  //             id:doc.id,
-  //             ...doc.data()
-              
-  //           }
-  //          })
-  //         console.log(contactref)
-  //       } catch (error) {
-  //           console.log("error")
-  //       }
-  //     }
-  //   getContacts()
-  //   },[]) 
-    // console.log(contacts)
-//     const handleSubmit=(e)=>{
-// // formData(setContacts)
-// console.log(formData)
-// checkcontacts(formData)
-//     }
-  //     const checkcontacts = async()=>{
-  //   try {
-  //       await setDoc(doc(db, "users", user.uid), data)
-  //   } catch (e) {
-  //     console.error("Error adding document: ", e);
-  //   }
-  // }
-//   }
-// //aik nayii collection create kr rha hai
-
-  //collection ky andr aik id pr or collections add kr rha hai
-  // const check2= async()=>{
-  //   const res2 = await addDoc(collection(db,"lahore/towgl5SFPhQQtulwWSr7/place"),{
-  //     class:"four",
-  //     pincode:7,
-  //     city:"parsa"
-  //   })
-  //   // console.log("result",res2)
-  // }
-// const handleSubmit=(e)=>{
-// // formData(setContacts)
-// console.log(formData)
-// addcontactref(formData)
-// }
-// const addcontactref= async (contact)=>{
-
-//   try {
-//     const contactref =collection(db,"users");
-//     await addDoc(contactref,contact)
-//     console.log(contact,90)
-//   } catch (error) {
-//     console.log("error")
-//   }
-// }
-  return (
-    <div>
-    <div className='navbar'>
-              <div>
-      <h1><b>Welcome!<i>{displayName}</i></b></h1>
-    </div>
-      <ul>
-        <li className='home'>  <Link to="/"><b>Logout</b></Link></li>
-        <li className='li'>Gallery</li>
-        <li className='li' >About</li>
-    </ul>
-    </div>
-    {/* <img className="img" src={pic} alt="sign" /> */}
-    {/* <div className="App">
-    <div className='navbar'>
-    <img className="imgg" src={svg} alt="sign" />
-    <h4> Firebase Contact App</h4>
-        </div>
-     <div className='input'>
-      <AiOutlineSearch className='icon'/>
-      <input type='text'/>
-      
-<AiFillPlusCircle className='iconplus'/>
-     </div>
-     <div>
-      {contacts.map((contact)=>{
-        return(
-          <div className='contact' key={contact.id}>  
-          <HiOutlineUserCircle className='hiicon'/>
-          <div>
-          <h2>{contact.name}</h2> 
-          <p>{contact.email}</p>   
-          </div> 
-          <div className='bibsicons'>
-          <BiMessageSquareEdit/> 
-          <BsFillTrash3Fill/>  
-          </div>
-        </div>
-        )
-      })}
-     </div>
- </div>  */}
-    {/* <div>
-     <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            onChange={(event) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                name: event.target.value,
-              }))
-            }
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            onChange={(event) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                email: event.target.value,
-              }))
-            }
-          />
-                  {/* <button onClick={handleSubmit} type="button" className="btn">
-       add
-
-        </button> */}
-          {/* </div>  */}
-</div>  )
-}
-
-export default Home
-
-
-
-
-
-// signup//
-
-import React, { useState} from "react";
-import { createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { auth } from "./FirebaseFile";
-import {db} from "./FirebaseFile"
-import { setDoc,doc ,collection} from "firebase/firestore";
-import './Signup.css'
-// import {collection,getDocs} from "firebase/firestore"
-// import {db} from "./FirebaseFile"
-const Signup = () => {
-  const [contacts,setContacts]=useState([])
-
-    const navigate = useNavigate()
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  
-  const [errormsg, setErrormsg] = useState("");
-  const handleSubmit = (e) => {
-    if (!formData.name || !formData.email || !formData.password) {
-      setErrormsg("fill all field");
-      return;
-    }
-
-    // .then(async(result)=>{
-    //   console.log(result.user,"op");
-    //   const ref =doc(db,"users",result.user.uid);
-    //   const docRef= await setDoc(ref)
-    // })
-    createUserWithEmailAndPassword(
-      auth,
-      formData.email,
-      formData.password
-    )       
-   
-      //  const docRef = setDoc(collection(db, "users", user.uid))
-
-      .then((userCredential) => {
-        const user = userCredential.user;
-
-        if (user) {updateProfile(user, { displayName: formData.name })
-        // setDoc(doc(collection(db, "users", user.uid)))
-        .then(() => {
-          console.log(user,'Display name updated:', formData.name);
-          navigate('/home');
-          setContacts(user)
-        })
-      }}
-      )
-      .catch((err) => {
-        setErrormsg(err.message);
-        console.log(errormsg)
-      });
- 
-     
-
-      // useEffect(()=>{
-      //   const getContacts = async()=>{
-      //       try {
-      //          const contactref= collection(db,"users") 
-      //          const consnapshots =await getDocs(contactref);
-      //          const contactList =consnapshots.docs.map((doc)=>
-      //          {
-      //           return{
-      //             id:user.uid,
-      //             ...doc.data()
-                  
-      //           }
-      //          })
-      //         setContacts(contactList)
-      //       } catch (error) {
-      //           console.log(error)
-      //       }
-      //     }
-      //   getContacts()
-      //   },[]) 
-    
-    }
-    function backtologin(){
-        navigate("/home")
-    }
-    // const userUid = contacts.uid
-    // const userRef = collection(db,'users').doc(userUid);
-    // userRef
-    //   .get()
-    //   .then((doc) => {
-    //     if (doc.exists) {
-    //       const userData = doc.data();
-    //       console.log('User details:', userData);
-    //     } else {
-    //       console.log('User document does not exist.');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error getting user document:', error);
-    //   });
-    
-  return (<div className="main">
-    <form>
-      <div className="jis">
-        <div>
-        <h2 className="login-form-title">SIGNUP FORM</h2>        
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            onChange={(event) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                name: event.target.value,
-              }))
-            }
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            onChange={(event) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                email: event.target.value,
-              }))
-            }
-          />{" "}
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            onChange={(event) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                password: event.target.value,
-              }))
-            }
-          />{" "}
-<h2 className="errormsg"><i>{errormsg}</i></h2>     
-   </div>
-        <button onClick={handleSubmit} type="button" className="btn">
-          Sign Up
-          {/* <button onClick={check}></button> */}
-
-        </button>
-        <div className="login">
-        <h2 onClick={backtologin}> Already have an account?  <b>Login</b></h2>
-        </div>
-      </div>
-    </form>
-
-</div>);
-};
-
-export default Signup;
-
-// export default Login
-
-
-
-
-// const getDatabyQuery =async()=>{
-//   const collectionRef = collection(db,"contacts");
-//   const q = query(collectionRef,where(userData.uid,"==",formData.userId))
-//   const snapshot = await getDocs(q)
-//   snapshot.forEach((data)=>setContacts(data.data()))
-//   getDatabyQuery()
-// }
-import React, { useEffect, useState } from 'react';
-import { auth } from './FirebaseFile';
+// // import pic from './pic/undraw_Newspaper_re_syf5.png'
+// import React, { useEffect, useState } from 'react';
 // import svg from './pic/logos_firebase.svg'
-import {Modal,ModalBody} from "reactstrap";
-import { Link } from 'react-router-dom';
-import {db} from './FirebaseFile'
-import {AiOutlineSearch,AiFillPlusCircle} from 'react-icons/ai';
-import {HiOutlineUserCircle} from 'react-icons/hi'
-import {RxCross1} from 'react-icons/rx'
-import {BsFillTrash3Fill}from 'react-icons/bs'
-import './home.css';
-import { collection,setDoc,doc, addDoc, getDocs, deleteDoc,where, query, onSnapshot} from 'firebase/firestore';
-const Home = () => {
-  const [displayName, setDisplayName] = useState('');
-  const [userData,setUserData]=useState([]) 
-  const [modal,setModel]=useState(false)
-  const [contacts,setContacts]=useState([])
- const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    address:"",
-    contact:""
-  });
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (user && user.displayName) {
-      setUserData(user)
-      setDisplayName(user.displayName);
-    } 
-  })
-  const deletecontact =async (id)=>{
-    try {
-      await deleteDoc(doc(db,"contacts",id))
-    } catch (error) {
-      console.log(error)
-    }
-    window.location.reload();
-  }
-  const handleSubmit = async() => {
-    setModel(false)
-    if(formData ===null){
-      alert ("fill All the fields")
-      return;
-    }
-    const docRef = await addDoc(collection(db, "contacts"), {
-      name: formData.name,
-      email: formData.email,
-      contact:formData.contact,
-      address:formData.address,
-      userId:userData.uid
-    })
-    window.location.reload();
-  }
-  console.log(userData)
+// import { auth } from './FirebaseFile';
+// import { Link } from 'react-router-dom';
+// import {db} from './FirebaseFile'
+// import {AiOutlineSearch,AiFillPlusCircle} from 'react-icons/ai';
+// import {HiOutlineUserCircle} from 'react-icons/hi'
+// import {BsFillTrash3Fill}from 'react-icons/bs'
+// import {BiMessageSquareEdit} from 'react-icons/bi'
+// // import './home.css';
+// import { collection,getDocs} from 'firebase/firestore';
+// const Home = () => {
+//   const [displayName, setDisplayName] = useState('');
+//   const [contacts,setContacts]=useState([])
+//   // const [formData, setFormData] = useState({
+//   //   name: "",
+//   //   email: "",
+//   // });
+ 
+//   // const [user,setUser]=useState({})
+//   // const [cool,setCool]=useState([])
+//   useEffect(() => {
+//     const user = auth.currentUser;
+//     // setUser(user)
+//     if (user && user.displayName) {
+//       setDisplayName(user.displayName);
+//       // setCool(user)
+//     }
+// // setUser(user)
 
-useEffect (()=>{
-  const getcontacts =async ()=>{
-    try{
-      const contactref = collection(db,"contacts")
-      const conSnapshot = await (getDocs(contactref))
-      const contactList= conSnapshot.docs.map((doc)=>{
-        return{
-          id:doc.id,
-          ...doc.data()
-        }
-      })
-            // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
+ 
+//   }, []);
+//   // console.log(cool.name)
+//   // useEffect(()=>{
+//   //   const getContacts = async()=>{
+//   //       try {
+//   //          const contactref= collection(db,"users") 
+//   //          const consnapshots =await getDocs(contactref);
+//   //          const contactList =consnapshots.docs.map((doc)=>
+//   //          {
+//   //           return{
+//   //             id:doc.id,
+//   //             ...doc.data()
+              
+//   //           }
+//   //          })
+//   //         console.log(contactref)
+//   //       } catch (error) {
+//   //           console.log("error")
+//   //       }
+//   //     }
+//   //   getContacts()
+//   //   },[]) 
+//     // console.log(contacts)
+// //     const handleSubmit=(e)=>{
+// // // formData(setContacts)
+// // console.log(formData)
+// // checkcontacts(formData)
+// //     }
+//   //     const checkcontacts = async()=>{
+//   //   try {
+//   //       await setDoc(doc(db, "users", user.uid), data)
+//   //   } catch (e) {
+//   //     console.error("Error adding document: ", e);
+//   //   }
+//   // }
+// //   }
+// // //aik nayii collection create kr rha hai
 
-      // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
-    // setContacts (filteredContacts)
-    console.log(contactList)
-    setContacts(contactList)
-    // console.log(userData.uid)//null
-      }
-      // console.log(userData.uid)
-      // console.log(formData.userId)
-      // setContacts(contactList)
-    catch(error){
-      console.log(error)
-    }
-  }
-  return () => getcontacts();
+//   //collection ky andr aik id pr or collections add kr rha hai
+//   // const check2= async()=>{
+//   //   const res2 = await addDoc(collection(db,"lahore/towgl5SFPhQQtulwWSr7/place"),{
+//   //     class:"four",
+//   //     pincode:7,
+//   //     city:"parsa"
+//   //   })
+//   //   // console.log("result",res2)
+//   // }
+// // const handleSubmit=(e)=>{
+// // // formData(setContacts)
+// // console.log(formData)
+// // addcontactref(formData)
+// // }
+// // const addcontactref= async (contact)=>{
 
-  // getcontacts() 
-},[])
-// const userId = auth.currentUser ? auth.currentUser.uid : null;
+// //   try {
+// //     const contactref =collection(db,"users");
+// //     await addDoc(contactref,contact)
+// //     console.log(contact,90)
+// //   } catch (error) {
+// //     console.log("error")
+// //   }
+// // }
+//   return (
+//     <div>
+//     <div className='navbar'>
+//               <div>
+//       <h1><b>Welcome!<i>{displayName}</i></b></h1>
+//     </div>
+//       <ul>
+//         <li className='home'>  <Link to="/"><b>Logout</b></Link></li>
+//         <li className='li'>Gallery</li>
+//         <li className='li' >About</li>
+//     </ul>
+//     </div>
+//     {/* <img className="img" src={pic} alt="sign" /> */}
+//     {/* <div className="App">
+//     <div className='navbar'>
+//     <img className="imgg" src={svg} alt="sign" />
+//     <h4> Firebase Contact App</h4>
+//         </div>
+//      <div className='input'>
+//       <AiOutlineSearch className='icon'/>
+//       <input type='text'/>
+      
+// <AiFillPlusCircle className='iconplus'/>
+//      </div>
+//      <div>
+//       {contacts.map((contact)=>{
+//         return(
+//           <div className='contact' key={contact.id}>  
+//           <HiOutlineUserCircle className='hiicon'/>
+//           <div>
+//           <h2>{contact.name}</h2> 
+//           <p>{contact.email}</p>   
+//           </div> 
+//           <div className='bibsicons'>
+//           <BiMessageSquareEdit/> 
+//           <BsFillTrash3Fill/>  
+//           </div>
+//         </div>
+//         )
+//       })}
+//      </div>
+//  </div>  */}
+//     {/* <div>
+//      <label>Name:</label>
+//           <input
+//             type="text"
+//             name="name"
+//             onChange={(event) =>
+//               setFormData((prevData) => ({
+//                 ...prevData,
+//                 name: event.target.value,
+//               }))
+//             }
+//           />
+//         </div>
+//         <div>
+//           <label>Email:</label>
+//           <input
+//             type="email"
+//             name="email"
+//             onChange={(event) =>
+//               setFormData((prevData) => ({
+//                 ...prevData,
+//                 email: event.target.value,
+//               }))
+//             }
+//           />
+//                   {/* <button onClick={handleSubmit} type="button" className="btn">
+//        add
 
-  // const filteredContacts = contacts.filter((contact) =>{return console.log(contact);});
-  // console.log(filteredContacts)
-  // console.log(contacts)
+//         </button> */}
+//           {/* </div>  */}
+// </div>  )
+// }
 
-  return ( <div className='home'>
-    <div className='navbar'>
-              <div className='navbartag'> 
-      <h1><b>Welcome!<i>{displayName}</i></b></h1>
-    </div>
-      <ul>
-        <li className='home'>  <Link to="/"><b>Logout</b></Link></li>
-        {/* <li className='li' onClick={()=>setModel(true)}>Add</li> */}
-        {/* <li className='li' onClick={about}>About</li> */}
-    </ul>
-    </div>
+// export default Home
 
 
-    <div className="App">
-    <div className='navbar-app'>
-    {/* <img className="imgg" src={svg} alt="sign" /> */}
-    <h4> CONTACT APP</h4>
-        </div>
-     <div className='input'>
-      <AiOutlineSearch className='icon'/>
-      <input type='text'/>
-      {/* <button onClick={addlist}> */}
-<AiFillPlusCircle className='iconplus' onClick={()=>setModel(true)}/>
-{/* </button> */}
-     </div>
-     <div className='con'>
-      {contacts.map((contact)=>{
-        return(
-          <div className='contact' key={contact.id}>  
-          <HiOutlineUserCircle className='hiicon'/>
-          <div className='inputs'>
-          <h2>{contact.name}</h2> 
-          <p>{contact.email}</p>   
-          </div> 
-          <div className='bibsicons'>
-          {/* <BiMessageSquareEdit/>  */}
-          <BsFillTrash3Fill onClick={()=>deletecontact(contact.id)}/>  
-          </div>
-        </div>
-        )
-      })}
-     </div>
-         <div>
-         </div>
 
-          </div>
 
-          <Modal isOpen={modal}
-toggle={()=>setModel(!modal)}>
-  {/* <ModalHeader toggle={()=>setModel(!modal)}>
-    Add
- </ModalHeader> */}
-  <ModalBody toggle={()=>setModel(!modal)}>
-    <div className='form'>
-      <div className='contact-add'>
-        <h2>Add CONTACT</h2>
-        <p><RxCross1 onClick={()=>setModel(false)}/></p>
-      </div>
-      <div>
-     <label>Name:</label>
+
+// // signup//
+
+// import React, { useState} from "react";
+// import { createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
+// import { useNavigate } from "react-router-dom";
+// import { auth } from "./FirebaseFile";
+// import {db} from "./FirebaseFile"
+// import { setDoc,doc ,collection} from "firebase/firestore";
+// import './Signup.css'
+// // import {collection,getDocs} from "firebase/firestore"
+// // import {db} from "./FirebaseFile"
+// const Signup = () => {
+//   const [contacts,setContacts]=useState([])
+
+//     const navigate = useNavigate()
+//   const [formData, setFormData] = useState({
+//     name: "",
+//     email: "",
+//     password: "",
+//   });
+  
+//   const [errormsg, setErrormsg] = useState("");
+//   const handleSubmit = (e) => {
+//     if (!formData.name || !formData.email || !formData.password) {
+//       setErrormsg("fill all field");
+//       return;
+//     }
+
+//     // .then(async(result)=>{
+//     //   console.log(result.user,"op");
+//     //   const ref =doc(db,"users",result.user.uid);
+//     //   const docRef= await setDoc(ref)
+//     // })
+//     createUserWithEmailAndPassword(
+//       auth,
+//       formData.email,
+//       formData.password
+//     )       
+   
+//       //  const docRef = setDoc(collection(db, "users", user.uid))
+
+//       .then((userCredential) => {
+//         const user = userCredential.user;
+
+//         if (user) {updateProfile(user, { displayName: formData.name })
+//         // setDoc(doc(collection(db, "users", user.uid)))
+//         .then(() => {
+//           console.log(user,'Display name updated:', formData.name);
+//           navigate('/home');
+//           setContacts(user)
+//         })
+//       }}
+//       )
+//       .catch((err) => {
+//         setErrormsg(err.message);
+//         console.log(errormsg)
+//       });
+ 
      
-          < input className="plusinput"
-            type="text"
-            name="name"
-            onChange={(event) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                name: event.target.value,
-              }))
-            }
-          />
-          <label>Email:</label>
-          < input className="plusinput"
-            type="email"
-            name="email"
-            onChange={(event) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                email: event.target.value,
-              }))
-            }
-          />
-     <label>addres:</label>
-     
-          < input className="plusinput"
-            type="text"
-            name="address"
-            onChange={(event) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                address: event.target.value,
-              }))
-            }
-          />
-        {/* <div> */}
-          <label>contact:</label>
-          < input className="plusinput"
-            type="Number"
-            name="contact"
-            onChange={(event) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                contact: event.target.value,
-              }))
-            }
-          />
-          </div>
-                  <button onClick={handleSubmit} type="button" className="btn handle">
-       add
 
-        </button> 
-          {/* </div>  */}
- </div>
- </ModalBody>
-   </Modal>
+//       // useEffect(()=>{
+//       //   const getContacts = async()=>{
+//       //       try {
+//       //          const contactref= collection(db,"users") 
+//       //          const consnapshots =await getDocs(contactref);
+//       //          const contactList =consnapshots.docs.map((doc)=>
+//       //          {
+//       //           return{
+//       //             id:user.uid,
+//       //             ...doc.data()
+                  
+//       //           }
+//       //          })
+//       //         setContacts(contactList)
+//       //       } catch (error) {
+//       //           console.log(error)
+//       //       }
+//       //     }
+//       //   getContacts()
+//       //   },[]) 
     
-</div>)}
+//     }
+//     function backtologin(){
+//         navigate("/home")
+//     }
+//     // const userUid = contacts.uid
+//     // const userRef = collection(db,'users').doc(userUid);
+//     // userRef
+//     //   .get()
+//     //   .then((doc) => {
+//     //     if (doc.exists) {
+//     //       const userData = doc.data();
+//     //       console.log('User details:', userData);
+//     //     } else {
+//     //       console.log('User document does not exist.');
+//     //     }
+//     //   })
+//     //   .catch((error) => {
+//     //     console.error('Error getting user document:', error);
+//     //   });
+    
+//   return (<div className="main">
+//     <form>
+//       <div className="jis">
+//         <div>
+//         <h2 className="login-form-title">SIGNUP FORM</h2>        
+//           <label>Name:</label>
+//           <input
+//             type="text"
+//             name="name"
+//             onChange={(event) =>
+//               setFormData((prevData) => ({
+//                 ...prevData,
+//                 name: event.target.value,
+//               }))
+//             }
+//           />
+//         </div>
+//         <div>
+//           <label>Email:</label>
+//           <input
+//             type="email"
+//             name="email"
+//             onChange={(event) =>
+//               setFormData((prevData) => ({
+//                 ...prevData,
+//                 email: event.target.value,
+//               }))
+//             }
+//           />{" "}
+//         </div>
+//         <div>
+//           <label>Password:</label>
+//           <input
+//             type="password"
+//             name="password"
+//             onChange={(event) =>
+//               setFormData((prevData) => ({
+//                 ...prevData,
+//                 password: event.target.value,
+//               }))
+//             }
+//           />{" "}
+// <h2 className="errormsg"><i>{errormsg}</i></h2>     
+//    </div>
+//         <button onClick={handleSubmit} type="button" className="btn">
+//           Sign Up
+//           {/* <button onClick={check}></button> */}
 
-export default Home
+//         </button>
+//         <div className="login">
+//         <h2 onClick={backtologin}> Already have an account?  <b>Login</b></h2>
+//         </div>
+//       </div>
+//     </form>
+
+// </div>);
+// };
+
+// export default Signup;
+
+// // export default Login
 
 
-useEffect (()=>{
-  const getDatabyQuery =async()=>{
-    const collectionRef = collection(db,"contacts");
-    // console.log("fordata", userData);
-    // console.log(userData)
-    const q =  query(collectionRef,where("userId","==",userData.uid))
-    // console.log(userData.uid)
-    // const snapshot = await getDocs(q)
-    // snapshot.forEach((data)=>setContacts(data.data()))
-    // console.log("snapsho", snapshot)
-    // setContacts(snapshot)
-    const contactsData = [];
 
-    const querySnapshot = await getDocs(q);
-querySnapshot.forEach((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-  // console.log(doc.id, " => ", doc.data());
-  contactsData.push(doc.data());
 
-  // setContacts(doc.data())
-  // console.log(setContacts)
-});
-// setContacts(doc.data)
-setContacts(contactsData);
-}
-  getDatabyQuery()
-},[])
+// // const getDatabyQuery =async()=>{
+// //   const collectionRef = collection(db,"contacts");
+// //   const q = query(collectionRef,where(userData.uid,"==",formData.userId))
+// //   const snapshot = await getDocs(q)
+// //   snapshot.forEach((data)=>setContacts(data.data()))
+// //   getDatabyQuery()
+// // }
+// import React, { useEffect, useState } from 'react';
+// import { auth } from './FirebaseFile';
+// // import svg from './pic/logos_firebase.svg'
+// import {Modal,ModalBody} from "reactstrap";
+// import { Link } from 'react-router-dom';
+// import {db} from './FirebaseFile'
+// import {AiOutlineSearch,AiFillPlusCircle} from 'react-icons/ai';
+// import {HiOutlineUserCircle} from 'react-icons/hi'
+// import {RxCross1} from 'react-icons/rx'
+// import {BsFillTrash3Fill}from 'react-icons/bs'
+// import './home.css';
+// import { collection,setDoc,doc, addDoc, getDocs, deleteDoc,where, query, onSnapshot} from 'firebase/firestore';
+// const Home = () => {
+//   const [displayName, setDisplayName] = useState('');
+//   const [userData,setUserData]=useState([]) 
+//   const [modal,setModel]=useState(false)
+//   const [contacts,setContacts]=useState([])
+//  const [formData, setFormData] = useState({
+//     name: "",
+//     email: "",
+//     address:"",
+//     contact:""
+//   });
+//   useEffect(() => {
+//     const user = auth.currentUser;
+//     if (user && user.displayName) {
+//       setUserData(user)
+//       setDisplayName(user.displayName);
+//     } 
+//   })
+//   const deletecontact =async (id)=>{
+//     try {
+//       await deleteDoc(doc(db,"contacts",id))
+//     } catch (error) {
+//       console.log(error)
+//     }
+//     window.location.reload();
+//   }
+//   const handleSubmit = async() => {
+//     setModel(false)
+//     if(formData ===null){
+//       alert ("fill All the fields")
+//       return;
+//     }
+//     const docRef = await addDoc(collection(db, "contacts"), {
+//       name: formData.name,
+//       email: formData.email,
+//       contact:formData.contact,
+//       address:formData.address,
+//       userId:userData.uid
+//     })
+//     window.location.reload();
+//   }
+//   console.log(userData)
+
+// useEffect (()=>{
+//   const getcontacts =async ()=>{
+//     try{
+//       const contactref = collection(db,"contacts")
+//       const conSnapshot = await (getDocs(contactref))
+//       const contactList= conSnapshot.docs.map((doc)=>{
+//         return{
+//           id:doc.id,
+//           ...doc.data()
+//         }
+//       })
+//             // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
+
+//       // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
+//     // setContacts (filteredContacts)
+//     console.log(contactList)
+//     setContacts(contactList)
+//     // console.log(userData.uid)//null
+//       }
+//       // console.log(userData.uid)
+//       // console.log(formData.userId)
+//       // setContacts(contactList)
+//     catch(error){
+//       console.log(error)
+//     }
+//   }
+//   return () => getcontacts();
+
+//   // getcontacts() 
+// },[])
+// // const userId = auth.currentUser ? auth.currentUser.uid : null;
+
+//   // const filteredContacts = contacts.filter((contact) =>{return console.log(contact);});
+//   // console.log(filteredContacts)
+//   // console.log(contacts)
+
+//   return ( <div className='home'>
+//     <div className='navbar'>
+//               <div className='navbartag'> 
+//       <h1><b>Welcome!<i>{displayName}</i></b></h1>
+//     </div>
+//       <ul>
+//         <li className='home'>  <Link to="/"><b>Logout</b></Link></li>
+//         {/* <li className='li' onClick={()=>setModel(true)}>Add</li> */}
+//         {/* <li className='li' onClick={about}>About</li> */}
+//     </ul>
+//     </div>
+
+
+//     <div className="App">
+//     <div className='navbar-app'>
+//     {/* <img className="imgg" src={svg} alt="sign" /> */}
+//     <h4> CONTACT APP</h4>
+//         </div>
+//      <div className='input'>
+//       <AiOutlineSearch className='icon'/>
+//       <input type='text'/>
+//       {/* <button onClick={addlist}> */}
+// <AiFillPlusCircle className='iconplus' onClick={()=>setModel(true)}/>
+// {/* </button> */}
+//      </div>
+//      <div className='con'>
+//       {contacts.map((contact)=>{
+//         return(
+//           <div className='contact' key={contact.id}>  
+//           <HiOutlineUserCircle className='hiicon'/>
+//           <div className='inputs'>
+//           <h2>{contact.name}</h2> 
+//           <p>{contact.email}</p>   
+//           </div> 
+//           <div className='bibsicons'>
+//           {/* <BiMessageSquareEdit/>  */}
+//           <BsFillTrash3Fill onClick={()=>deletecontact(contact.id)}/>  
+//           </div>
+//         </div>
+//         )
+//       })}
+//      </div>
+//          <div>
+//          </div>
+
+//           </div>
+
+//           <Modal isOpen={modal}
+// toggle={()=>setModel(!modal)}>
+//   {/* <ModalHeader toggle={()=>setModel(!modal)}>
+//     Add
+//  </ModalHeader> */}
+//   <ModalBody toggle={()=>setModel(!modal)}>
+//     <div className='form'>
+//       <div className='contact-add'>
+//         <h2>Add CONTACT</h2>
+//         <p><RxCross1 onClick={()=>setModel(false)}/></p>
+//       </div>
+//       <div>
+//      <label>Name:</label>
+     
+//           < input className="plusinput"
+//             type="text"
+//             name="name"
+//             onChange={(event) =>
+//               setFormData((prevData) => ({
+//                 ...prevData,
+//                 name: event.target.value,
+//               }))
+//             }
+//           />
+//           <label>Email:</label>
+//           < input className="plusinput"
+//             type="email"
+//             name="email"
+//             onChange={(event) =>
+//               setFormData((prevData) => ({
+//                 ...prevData,
+//                 email: event.target.value,
+//               }))
+//             }
+//           />
+//      <label>addres:</label>
+     
+//           < input className="plusinput"
+//             type="text"
+//             name="address"
+//             onChange={(event) =>
+//               setFormData((prevData) => ({
+//                 ...prevData,
+//                 address: event.target.value,
+//               }))
+//             }
+//           />
+//         {/* <div> */}
+//           <label>contact:</label>
+//           < input className="plusinput"
+//             type="Number"
+//             name="contact"
+//             onChange={(event) =>
+//               setFormData((prevData) => ({
+//                 ...prevData,
+//                 contact: event.target.value,
+//               }))
+//             }
+//           />
+//           </div>
+//                   <button onClick={handleSubmit} type="button" className="btn handle">
+//        add
+
+//         </button> 
+//           {/* </div>  */}
+//  </div>
+//  </ModalBody>
+//    </Modal>
+    
+// </div>)}
+
+// export default Home
+
+
+// useEffect (()=>{
+//   const getDatabyQuery =async()=>{
+//     const collectionRef = collection(db,"contacts");
+//     // console.log("fordata", userData);
+//     // console.log(userData)
+//     const q =  query(collectionRef,where("userId","==",userData.uid))
+//     // console.log(userData.uid)
+//     // const snapshot = await getDocs(q)
+//     // snapshot.forEach((data)=>setContacts(data.data()))
+//     // console.log("snapsho", snapshot)
+//     // setContacts(snapshot)
+//     const contactsData = [];
+
+//     const querySnapshot = await getDocs(q);
+// querySnapshot.forEach((doc) => {
+//   // doc.data() is never undefined for query doc snapshots
+//   // console.log(doc.id, " => ", doc.data());
+//   contactsData.push(doc.data());
+
+//   // setContacts(doc.data())
+//   // console.log(setContacts)
+// });
+// // setContacts(doc.data)
+// setContacts(contactsData);
+// }
+//   getDatabyQuery()
+// },[])

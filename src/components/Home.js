@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { auth } from './FirebaseFile';
-// import svg from './pic/logos_firebase.svg'
 import {Modal,ModalBody} from "reactstrap";
 import { Link } from 'react-router-dom';
 import {db} from './FirebaseFile'
@@ -9,7 +8,7 @@ import {HiOutlineUserCircle} from 'react-icons/hi'
 import {RxCross1} from 'react-icons/rx'
 import {BsFillTrash3Fill}from 'react-icons/bs'
 import './home.css';
-import { collection,setDoc,doc, addDoc, getDocs, deleteDoc,where, query, onSnapshot} from 'firebase/firestore';
+import { collection,setDoc,doc, addDoc, getDocs, deleteDoc,where, query, onSnapshot,deleteField,updateDoc} from 'firebase/firestore';
 const Home = () => {
   const [displayName, setDisplayName] = useState('');
   const [userData,setUserData]=useState([]) 
@@ -28,20 +27,22 @@ const Home = () => {
       setDisplayName(user.displayName);
     } 
   })
-  const deletecontact =async (id)=>{
-    try {
-      await deleteDoc(doc(db,"contacts",id))
-    } catch (error) {
-      console.log(error)
-    }
-    window.location.reload();
-  }
+
+    const deleteContact = async (id) => {
+      try {
+        await deleteDoc(doc(db, "contacts", id));
+        console.log("Contact deleted successfully!");
+        return true; 
+      } catch (error) {
+        console.error("Error deleting contact:", error);
+        return false; 
+      }
+    };
+ 
+
+  console.log(contacts)
   const handleSubmit = async() => {
     setModel(false)
-    if(formData ===null){
-      alert ("fill All the fields")
-      return;
-    }
     const docRef = await addDoc(collection(db, "contacts"), {
       name: formData.name,
       email: formData.email,
@@ -49,80 +50,36 @@ const Home = () => {
       address:formData.address,
       userId:userData.uid
     })
-    window.location.reload();
+    console.log("user save")
+    setFormData(docRef)
   }
-  // console.log(userData)
-// useEffect (()=>{
-//   const getDatabyQuery =async()=>{
-//     const contactsData = [];
-
-//     const collectionRef =  collection(db,"contacts");
-//     console.log(collectionRef)
-//     const q = query(collectionRef, where("userId","==",userData.uid))
-//     const querySnapshot = await getDocs(q);
-//     // const querySnapshot = await getDocs(q);
-// querySnapshot.forEach((doc) => {
-//   console.log(doc.id, '=>', doc.data());
-//   contactsData.push(doc.data());
-//   setContacts(contactsData)
-// });
-// }
-//   getDatabyQuery()
-// },[])
-useEffect(() => {
-  const getDatabyQuery = async () => {
-    const contactsData = [];
-    const collectionRef = collection(db, "contacts");
-    console.log(collectionRef);
-    const q = query(collectionRef, where("userId", "==", userData.uid));
-    const querySnapshot = await getDocs(q);
-
-    querySnapshot.forEach((doc) => {
-      // console.log(doc.id, '=>', doc.data());
-      contactsData.push(doc.data());
-    });
-
-    setContacts(contactsData);
-  }; getDatabyQuery();
-}, []);
-
-// console.log(contacts)
-// useEffect (()=>{
-//   const getcontacts =async ()=>{
-//     try{
-//       const contactref = collection(db,"contacts")
-//       const conSnapshot = await (getDocs(contactref))
-//       const contactList= conSnapshot.docs.map((doc)=>{
-//         return{
-//           id:doc.id,
-//           ...doc.data()
-//         }
-//       })
-//             // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
-
-//       // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
-//     // setContacts (filteredContacts)
-//     console.log(contactList)
-//     setContacts(contactList)
-//     // console.log(userData.uid)//null
-//       }
-//       // console.log(userData.uid)
-//       // console.log(formData.userId)
-//       // setContacts(contactList)
-//     catch(error){
-//       console.log(error)
-//     }
-//   }
-//   return () => getcontacts();
-
-//   // getcontacts() 
-// },[])
-// const userId = auth.currentUser ? auth.currentUser.uid : null;
-
-  // const filteredContacts = contacts.filter((contact) =>{return console.log(contact);});
-  // console.log(filteredContacts)
-  // console.log(contacts)
-
+  useEffect(() => {
+    const getDatabyQuery = async () => {
+      if (!userData) {
+        return;
+      }
+  
+      try {
+        const collectionRef = collection(db, "contacts");
+        const q = query(collectionRef, where("userId", "==", userData.uid));
+        const querySnapshot = await getDocs(q);
+  
+        const contactsData = [];
+        querySnapshot.forEach((doc) => {
+          const contact = {
+            id: doc.id,
+            ...doc.data()
+          };
+          contactsData.push(contact)
+        });
+        setContacts(contactsData);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      }
+    };
+  
+    getDatabyQuery();
+  }, [formData,deleteContact]);
   return ( <div className='home'>
     <div className='navbar'>
               <div className='navbartag'> 
@@ -132,8 +89,6 @@ useEffect(() => {
         <li className='home'>  <Link to="/"><b>Logout</b></Link></li>
     </ul>
     </div>
-
-
     <div className="App">
     <div className='navbar-app'>
     <h4> CONTACT APP</h4>
@@ -145,22 +100,20 @@ useEffect(() => {
 {/* </button> */}
      </div>
      <div className='con'>
-      {contacts.map((contact)=>{
-        return(
-          <div className='contact' key={contact.id}>  
-          <HiOutlineUserCircle className='hiicon'/>
-          <div className='inputs'>
-          <h2>{contact.name}</h2> 
-          <p>{contact.email}</p>   
-          </div> 
-          <div className='bibsicons'>
-          {/* <BiMessageSquareEdit/>  */}
-          <BsFillTrash3Fill onClick={()=>deletecontact(contact.id)}/>  
-          </div>
-        </div>
-        )
-      })}
-     </div>
+  {contacts?.map((contact) => (
+    <div className='contact' key={contact.id}>  
+      <HiOutlineUserCircle className='hiicon'/>
+      <div className='inputs'>
+        <h2>{contact.name}</h2> 
+        <p>{contact.email}</p>   
+      </div> 
+      <div className='bibsicons'>
+        <BsFillTrash3Fill onClick={() => deleteContact(contact.id)}/>  
+      </div>
+    </div>
+  ))}
+</div>
+
          <div>
          </div>
 
@@ -168,9 +121,6 @@ useEffect(() => {
 
           <Modal isOpen={modal}
 toggle={()=>setModel(!modal)}>
-  {/* <ModalHeader toggle={()=>setModel(!modal)}>
-    Add
- </ModalHeader> */}
   <ModalBody toggle={()=>setModel(!modal)}>
     <div className='form'>
       <div className='contact-add'>
@@ -230,7 +180,6 @@ toggle={()=>setModel(!modal)}>
        add
 
         </button> 
-          {/* </div>  */}
  </div>
  </ModalBody>
    </Modal>
