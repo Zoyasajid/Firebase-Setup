@@ -157,6 +157,10 @@ justify-content: flex-start;
       /* background-color: grey; */
       /* background-attachment: fixed; */
     }
+    .home{
+      margin-top:2px ;
+/* background-color: #140c2c; */
+    }
     .navbar-app{
       height: 60px;
       width: 98%;
@@ -182,13 +186,13 @@ justify-content: flex-start;
   
     }
     .contact-add h2{
-      font-size: 28px;
+      font-size: 34px;
       margin-top:15% ;
       font-weight: 800;
 
     }
     .contact-add p{
-      margin-left:32% ;
+      margin-left:12% ;
       font-size: 53px;
       font-weight: 900;
     }
@@ -199,5 +203,39 @@ justify-content: flex-start;
 
     }.contact{
       height: auto;
+      margin-top: 10px;
     }
+    .hiicon{
+      color: white;
+          font-size: 54px;
+          margin: 14px;
+          margin-left: 12px;
+          margin-right: 12px;
+/* background-color:pink;         */
+        }
+        .inputs{
+          margin-left: -45px ;
+          justify-content: flex-start;
+          /* background-color: aqua; */
+        }
+        .inputs h2{
+      font-size: 21px;
+      
+        }
+        .inputs p{
+          /* margin-top: -18px; */
+      /* justify-content: flex-start; */
+      /* font-size: 22px; */
+        }
+        .bibsicons{
+          /* align-items: center; */
+          color: white;
+          font-size: 2rem;
+          /* margin: 50px; */
+          /* text-align: center; */
+          margin-top:23px;
+          margin-right: 15px;
+          /* justify-content: flex-start; */
+          gap: 1;
+        }
   }

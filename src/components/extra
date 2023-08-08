@@ -412,9 +412,7 @@
 //           ...doc.data()
 //         }
 //       })
-//             // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
-
-//       // const filteredContacts=contactList.filter((contact)=>{return contact.userId === userData.uid}) 
+//            
 //     // setContacts (filteredContacts)
 //     console.log(contactList)
 //     setContacts(contactList)

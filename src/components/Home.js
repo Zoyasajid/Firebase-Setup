@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { collection,setDoc,doc, addDoc, getDocs, deleteDoc,where, query, onSnapshot,deleteField,updateDoc} from 'firebase/firestore';
 const Home = () => {
   const [displayName, setDisplayName] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [userData,setUserData]=useState([]) 
   const [modal,setModel]=useState(false)
   const [contacts,setContacts]=useState([])
@@ -23,6 +24,7 @@ const Home = () => {
     address:"",
     contact:""
   });
+  
   useEffect(() => {
     const user = auth.currentUser;
     if (user && user.displayName) {
@@ -33,10 +35,8 @@ const Home = () => {
 
     const deleteContact = async (id) => {
       try {
+        toast.success("Contact deleted")
         await deleteDoc(doc(db, "contacts", id));
-        // console.log("Contact deleted successfully!");
-        toast.success("Contact deleted successfully")
-        // return true; 
       } catch (error) {
         console.error("Error deleting contact:", error);
         // return false; 
@@ -84,6 +84,14 @@ const Home = () => {
   
     getDatabyQuery();
   }, [formData,deleteContact]);
+
+
+  const filterContacts = () => {
+    const filtered = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setContacts(filtered);
+  };
   return ( <div className='home'>
     <div className='navbar'>
               <div className='navbartag'> 
@@ -97,7 +105,13 @@ const Home = () => {
     <div className='navbar-app'>
     <h4> CONTACT APP</h4>
         </div>
-     <div className='input'>
+     <div className='input'
+     type="text"
+     placeholder="Search contacts"
+     value={searchTerm}
+     onKeyDown={filterContacts}
+     onChange={(e) => setSearchTerm(e.target.value)}
+     >
       <AiOutlineSearch className='icon'/>
       <input type='text'/>
 <AiFillPlusCircle className='iconplus' onClick={()=>setModel(true)}/>
@@ -136,6 +150,7 @@ toggle={()=>setModel(!modal)}>
      <label>Name:</label>
      
           < input className="plusinput"
+          
             type="text"
             name="name"
             onChange={(event) =>
@@ -185,11 +200,11 @@ toggle={()=>setModel(!modal)}>
        add
 
         </button> 
- <ToastContainer/>
  </div>
  </ModalBody>
    </Modal>
 
+ <ToastContainer/>
 </div>
 )}
 
