@@ -54,8 +54,9 @@ const Home = () => {
       address:formData.address,
       userId:userData.uid
     })
-    console.log("user save")
+    // console.log("user save")
     setFormData(docRef)
+    // console.log(formData)
   }
   useEffect(() => {
     const getDatabyQuery = async () => {
@@ -84,7 +85,7 @@ const Home = () => {
   
     getDatabyQuery();
   }, [formData,deleteContact]);
-
+console.log(contacts)
 
   const filterContacts = () => {
     const filtered = contacts.filter(contact =>
