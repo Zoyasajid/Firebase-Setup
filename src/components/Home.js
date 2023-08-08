@@ -3,11 +3,14 @@ import { auth } from './FirebaseFile';
 import {Modal,ModalBody} from "reactstrap";
 import { Link } from 'react-router-dom';
 import {db} from './FirebaseFile'
+// import { toast } from 'react-toastify';
 import {AiOutlineSearch,AiFillPlusCircle} from 'react-icons/ai';
 import {HiOutlineUserCircle} from 'react-icons/hi'
 import {RxCross1} from 'react-icons/rx'
 import {BsFillTrash3Fill}from 'react-icons/bs'
 import './home.css';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 import { collection,setDoc,doc, addDoc, getDocs, deleteDoc,where, query, onSnapshot,deleteField,updateDoc} from 'firebase/firestore';
 const Home = () => {
   const [displayName, setDisplayName] = useState('');
@@ -31,16 +34,17 @@ const Home = () => {
     const deleteContact = async (id) => {
       try {
         await deleteDoc(doc(db, "contacts", id));
-        console.log("Contact deleted successfully!");
-        return true; 
+        // console.log("Contact deleted successfully!");
+        toast.success("Contact deleted successfully")
+        // return true; 
       } catch (error) {
         console.error("Error deleting contact:", error);
-        return false; 
+        // return false; 
       }
     };
  
 
-  console.log(contacts)
+  // console.log(contacts)
   const handleSubmit = async() => {
     setModel(false)
     const docRef = await addDoc(collection(db, "contacts"), {
@@ -112,6 +116,7 @@ const Home = () => {
       </div>
     </div>
   ))}
+
 </div>
 
          <div>
@@ -180,10 +185,12 @@ toggle={()=>setModel(!modal)}>
        add
 
         </button> 
+ <ToastContainer/>
  </div>
  </ModalBody>
    </Modal>
-    
-</div>)}
+
+</div>
+)}
 
 export default Home
