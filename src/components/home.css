@@ -207,7 +207,7 @@ justify-content: flex-start;
     }
     .hiicon{
       color: white;
-          font-size: 54px;
+          font-size: 2.2rem;
           margin: 14px;
           /* margin-left: 12px; */
           margin-right: 12px;
@@ -223,21 +223,21 @@ justify-content: flex-start;
           /* background-color: aqua; */
         }
         .inputs h2{
-      font-size: 21px;
+      font-size: 19px;
       
         }
         .inputs p{
-          /* margin-top: -18px; */
+          margin-top: -7px;
       /* justify-content: flex-start; */
-      font-size: 19px;
+      font-size: 10px;
         }
         .bibsicons{
           /* align-items: center; */
           color: white;
-          font-size: 2rem;
+          font-size: 1.5rem;
           /* margin: 50px; */
           /* text-align: center; */
-          margin-top:23px;
+          margin-top:17px;
           margin-right: 15px;
           /* justify-content: flex-start; */
           gap: 1;
