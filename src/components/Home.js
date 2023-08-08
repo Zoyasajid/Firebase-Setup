@@ -130,7 +130,9 @@ const Home = () => {
       </div>
     </div>
   ))}
- <ToastContainer/>
+ <ToastContainer 
+ position='bottom-center'
+ />
 
 </div>
 
@@ -172,7 +174,7 @@ toggle={()=>setModel(!modal)}>
               }))
             }
           />
-     <label>addres:</label>
+     <label>Address:</label>
      
           < input className="plusinput"
             type="text"
@@ -185,7 +187,7 @@ toggle={()=>setModel(!modal)}>
             }
           />
         {/* <div> */}
-          <label>contact:</label>
+          <label>Contact:</label>
           < input className="plusinput"
             type="Number"
             name="contact"

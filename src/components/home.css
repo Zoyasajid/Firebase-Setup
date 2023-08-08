@@ -84,6 +84,7 @@ color: white;
     /* height: 8999px; */
   
   }
+  
   .bibsicons{
     /* align-items: center; */
     color: white;
@@ -192,7 +193,7 @@ justify-content: flex-start;
 
     }
     .contact-add p{
-      margin-left:12% ;
+      margin-left:15% ;
       font-size: 53px;
       font-weight: 900;
     }
@@ -217,7 +218,7 @@ justify-content: flex-start;
           /* margin-left: -45px ; */
           /* justify-content: flex-start; */
           text-align: start;
-          margin-left: -29px;
+          margin-left: -25px;
           /* background-color: #140c2c; */
           
           /* background-color: aqua; */
